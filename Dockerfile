@@ -6,4 +6,6 @@ ADD greetings_app /greetings_app
 
 RUN pip install -r /greetings_app/requirements.txt
 
+EXPOSE 5000
+
 CMD ["python","/greetings_app/app.py"]
