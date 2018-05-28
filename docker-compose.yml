@@ -1,0 +1,31 @@
+version: '2.2'
+services:
+  sql:
+    image: postgres
+    container_name: psql 
+    volumes:
+      - /var/data:/var/lib/postgresql/data:rw
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=greetings
+    ports:
+      - 5432:5432
+  web:
+    build: . 
+    container_name: app
+    volumes:
+      - ./greetings_app:/greetings_app
+    ports:
+      - 5000:5000
+    depends_on:
+      - sql 
+  proxy:
+    container_name: nginx
+    image: nginx
+    volumes:
+      - ./proxy:/etc/nginx/conf.d:ro
+    ports:
+      - 80:80
+    depends_on:
+      - web 
