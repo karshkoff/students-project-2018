@@ -1,31 +1,31 @@
 version: '3'
 services:
-  db:
+  sql:
     image: postgres
-    container_name: db-lab
+    container_name: psql 
+    volumes:
+      - /var/data:/var/lib/postgresql/data:rw
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: greetings
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=greetings
     ports:
       - 5432:5432
-  app:
-    build: .
-    container_name: app-lab
+  web:
+    build: . 
+    container_name: app
     volumes:
       - ./greetings_app:/greetings_app
     ports:
       - 5000:5000
     depends_on:
-      - db 
+      - sql 
   proxy:
+    container_name: nginx
     image: nginx
-    container_name: nginx-lab
     volumes:
-      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./proxy:/etc/nginx/conf.d:ro
     ports:
-      - 80
+      - 80:80
     depends_on:
-      - app
-    links:
-      - app
+      - web 

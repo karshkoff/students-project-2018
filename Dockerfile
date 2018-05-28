@@ -1,6 +1,6 @@
 FROM python:3.7-rc
 
-ENV DB_URL=postgresql://user:password@db-lab:5432/greetings
+ENV DB_URL=postgresql://user:password@psql:5432/greetings
 
 ADD greetings_app /greetings_app 
 
