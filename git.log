@@ -1,0 +1,66 @@
+commit 9f12730880f2693081de1b6b737dd55c097db04c
+Merge: fc009d6 27d9742
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Mon May 28 19:05:17 2018 +0300
+
+    Fix merge conflict
+
+commit fc009d6f3380b5b03234d7d6802fb5132e609bd3
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Mon May 28 18:55:12 2018 +0300
+
+    Merge TASK14-1-Dockerfile branch
+
+commit 27d9742d38753e22f7ab88a8c57bbfce6b128de3
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Mon May 28 18:44:41 2018 +0300
+
+    Add docker-compose file
+
+commit 55919ad41fad22cb2554f12474ce12f59f50ccd8
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Mon May 28 09:14:54 2018 +0300
+
+    Networking check
+
+commit 01f79dfc1a568950bd69b353318928430b87fff9
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Sun May 27 20:39:10 2018 +0300
+
+    Add docker-compose and dependencies files
+
+commit 79327819ebdafa0612427563cce7bd3490fffb7d
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Sun May 27 15:58:38 2018 +0300
+
+    Edit TODO.md file
+
+commit 3057b32d7f9a2e40ae8d2255ec7f4ea19890f635
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Sun May 27 15:36:28 2018 +0300
+
+    Edit dockerfile
+
+commit 6b3003e4a4121a9931f4524d1866bc58768886d9
+Author: andrey-karshkov <karshkoff@gmail.com>
+Date:   Sun May 27 15:25:24 2018 +0300
+
+    Add dockerfile
+
+commit 9287eb88d976da0d933912a289d1b44fc4d7ee09
+Author: root <root@localhost.localdomain>
+Date:   Mon May 21 20:02:28 2018 +0300
+
+    Initial commit
+
+commit cf5b42c6d1844c2af2de932d06e988de4ec97e4a
+Author: Nick Demianchuk <nikolai_demianchuk@epam.com>
+Date:   Sun May 20 21:19:38 2018 +0300
+
+    First working version of app
+
+commit 7a78bcfa0f9b14466eb4bdd29da1d57382d1332c
+Author: nick-demianchuk <nikolai_demianchuk@epam.com>
+Date:   Tue May 15 15:40:23 2018 +0300
+
+    Initial commit
