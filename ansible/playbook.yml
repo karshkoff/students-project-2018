@@ -1,0 +1,78 @@
+---
+- name: Run stack of containers (postgres, flask, nginx)
+  hosts: lab
+  vars:
+    - project_name: students-project-2018
+  vars_files:
+    - ./vars/vault_vars.yml
+  remote_user: user
+  become: yes
+
+  tasks:
+    - name: Copy app's files
+      copy:
+        src: "{{ playbook_dir }}/../greetings_app"
+        dest: "{{ ansible_user_dir }}/{{ project_name }}/"
+
+    - name: Copy proxy conf
+      copy:
+        src: "{{ playbook_dir }}/../proxy"
+        dest: "{{ ansible_user_dir }}/{{ project_name }}/"
+
+    - name: remove container psql
+      docker_container:
+        name: psql
+        state: absent
+    - name: remove container app
+      docker_container:
+        name: app
+        state: absent
+    - name: remove container nginx
+      docker_container:
+        name: nginx
+        state: absent
+
+    - name: Create docker-compose and start containers
+      docker_service:
+        project_name: "{{ project_name }}"
+        recreate: always
+        definition:
+          version: '2'
+          services:
+            db:
+              image: postgres
+              container_name: psql
+              volumes:
+                - /var/data:/var/lib/postgresql/data:rw
+              environment:
+                - POSTGRES_USER="{{ postgres_user }}"
+                - POSTGRES_PASSWORD="{{ postgres_passwd }}"
+                - POSTGRES_DB=greetings
+              ports:
+                - 5432:5432
+            web:
+              image: python:3.7-rc
+              container_name: app
+              environment:
+                - DB_URL="postgresql://{{ postgres_user }}:{{ postgres_passwd }}@psql:5432/greetings"
+              expose:
+                - 5000
+              volumes:
+                - "{{ ansible_user_dir }}/{{ project_name }}/greetings_app:/greetings_app"
+              entrypoint:
+                - /bin/bash
+                - -c
+                - "pip install -r greetings_app/requirements.txt && python greetings_app/app.py"
+              ports:
+                - 5000:5000
+              depends_on:
+                - db
+            proxy:
+              container_name: nginx
+              image: nginx
+              volumes:
+                - "{{ ansible_user_dir }}/{{ project_name }}/proxy:/etc/nginx/conf.d:ro"
+              ports:
+                - 80:80
+              depends_on:
+                - web

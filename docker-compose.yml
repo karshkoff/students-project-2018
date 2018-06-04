@@ -1,8 +1,8 @@
 version: '2.2'
 services:
-  sql:
+  db:
     image: postgres
-    container_name: psql 
+    container_name: psql
     volumes:
       - /var/data:/var/lib/postgresql/data:rw
     environment:
@@ -12,14 +12,14 @@ services:
     ports:
       - 5432:5432
   web:
-    build: . 
+    build: .
     container_name: app
     volumes:
       - ./greetings_app:/greetings_app
     ports:
       - 5000:5000
     depends_on:
-      - sql 
+      - db
   proxy:
     container_name: nginx
     image: nginx
@@ -28,4 +28,4 @@ services:
     ports:
       - 80:80
     depends_on:
-      - web 
+      - web
