@@ -54,7 +54,7 @@
               image: python:3.7-rc
               container_name: app
               environment:
-                - DB_URL="postgresql://{{ postgres_user }}:{{ postgres_passwd }}@psql:5432/greetings"
+                - "DB_URL=postgresql://{{ postgres_user }}:{{ postgres_passwd }}@psql:5432/greetings"
               expose:
                 - 5000
               volumes:
