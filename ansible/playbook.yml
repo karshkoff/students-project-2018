@@ -19,6 +19,11 @@
         src: "{{ playbook_dir }}/../proxy"
         dest: "{{ ansible_user_dir }}/{{ project_name }}/"
 
+    - name: Create data directory for db
+      file:
+        path: /var/data
+        state: directory
+
     - name: remove container psql
       docker_container:
         name: psql
@@ -45,11 +50,9 @@
               volumes:
                 - /var/data:/var/lib/postgresql/data:rw
               environment:
-                - POSTGRES_USER="{{ postgres_user }}"
-                - POSTGRES_PASSWORD="{{ postgres_passwd }}"
-                - POSTGRES_DB=greetings
-              ports:
-                - 5432:5432
+                - "POSTGRES_USER={{ postgres_user }}"
+                - "POSTGRES_PASSWORD={{ postgres_passwd }}"
+                - "POSTGRES_DB=greetings"
             web:
               image: python:3.7-rc
               container_name: app
@@ -63,8 +66,6 @@
                 - /bin/bash
                 - -c
                 - "pip install -r greetings_app/requirements.txt && python greetings_app/app.py"
-              ports:
-                - 5000:5000
               depends_on:
                 - db
             proxy:
