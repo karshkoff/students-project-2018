@@ -2,7 +2,10 @@ from app import *
 from mock import patch
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> copy-epm-branch
 class SimpleTestData(object):
     def __init__(self, name, counter):
         self.name = name
