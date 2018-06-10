@@ -2,7 +2,7 @@ FROM python:3.7-rc
 
 ENV DB_URL=postgresql://user:password@psql:5432/greetings
 
-ADD greetings_app /greetings_app 
+ADD greetings_app /greetings_app
 
 RUN pip install -r /greetings_app/requirements.txt
 

@@ -9,15 +9,11 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=greetings
-    ports:
-      - 5432:5432
   web:
     build: .
     container_name: app
     volumes:
       - ./greetings_app:/greetings_app
-    ports:
-      - 5000:5000
     depends_on:
       - db
   proxy:
