@@ -10,15 +10,15 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=greetings
   web:
-    build: .
+    image: karshkoff/app 
     container_name: app
-    volumes:
-      - ./greetings_app:/greetings_app
+    environment:
+      - DB_URL=postgresql://user:password@psql:5432/greetings
     depends_on:
       - db
   proxy:
-    container_name: nginx
     image: nginx
+    container_name: nginx
     volumes:
       - ./proxy:/etc/nginx/conf.d:ro
     ports:
