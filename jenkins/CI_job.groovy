@@ -26,7 +26,11 @@ node {
 	}
 
 	stage('Unit test') {
-		sh "docker stop $CONTAINER_NAME"
+		try {
+			sh "docker stop $CONTAINER_NAME"
+		} catch (error) {
+		}
+
 		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $CONTAINER_NAME"
 	}
 
