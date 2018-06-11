@@ -35,7 +35,7 @@ node {
 		sleep 5
 
 		sh "docker exec app python /opt/greetings_app/test_selects.py"
-		exitCode = sh "docker exec app echo $?"
+		exitCode = sh "docker exec app echo \$?"
 		echo exitCode
 		if (exitCode != '0') {
 			currentBuild.result = 'FAILED'
