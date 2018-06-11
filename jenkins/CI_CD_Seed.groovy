@@ -14,7 +14,7 @@ pipelineJob("CI_job") {
 						url('https://github.com/karshkoff/students-project-2018.git')
 						credentials('github-karshkoff')
 					}
-					branch('master')
+					branch('refs/tags/*')
 				}
 			}
 			scriptPath('jenkins/CI_job.groovy')
