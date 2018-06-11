@@ -21,7 +21,7 @@ node {
 		} catch (error) {
 		}
 
-		sh "docker build -t $CONTAINER_NAME:$CONTAINER_TAG -pull --no-cache ."
+		sh "docker build -t $CONTAINER_NAME:$CONTAINER_TAG --pull --no-cache ."
 		echo "Image $CONTAINER_NAME build complete"
 	}
 
