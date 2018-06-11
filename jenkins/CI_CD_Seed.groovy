@@ -3,7 +3,7 @@ pipelineJob("CI_job") {
 	displayName('greetings app CI')
 
 	triggers {
-		scm('*/5 * * * *')
+		scm('H/5 * * * *')
 	}
 
 	definition {
