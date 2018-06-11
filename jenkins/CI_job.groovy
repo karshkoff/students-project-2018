@@ -34,10 +34,8 @@ node {
 		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $CONTAINER_NAME"
 		sleep 5
 
-		sh "docker exec app python /opt/greetings_app/test_selects.py"
-		exitCode = sh "docker exec app echo \$?"
-		echo exitCode
-		if (exitCode != '0') {
+		exitCode = sh(returnStatus: true, script: "docker exec app python /opt/greetings_app/test_selects.py")
+		if (exitCode != 0) {
 			currentBuild.result = 'FAILED'
 			sh "exit ${exitCode}"
 		}
