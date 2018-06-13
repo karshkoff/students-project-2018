@@ -62,7 +62,7 @@
                 - "POSTGRES_PASSWORD={{ postgres_passwd }}"
                 - "POSTGRES_DB=greetings"
             web:
-              image: "karshkoff/app:{{ lookup('env','APP_TAG_NAME') or 'latest' }}" 
+              image: "karshkoff/app:{{ lookup('env','IMAGE_TAG') or 'latest' }}" 
               container_name: app
               environment:
                 - "DB_URL=postgresql://{{ postgres_user }}:{{ postgres_passwd }}@psql:5432/greetings"

@@ -17,10 +17,6 @@ pipelineJob("CI_job") {
 						credentials('github-karshkoff')
 					}
 					branch('refs/tags/*')
-					
-					extensions {
-						gitTagMessageExtension {}
-					}
 				}
 			}
 			scriptPath('jenkins/CI_job.groovy')
@@ -31,6 +27,23 @@ pipelineJob("CI_job") {
 pipelineJob("CD_job") {
 
 	displayName('greetings app CD')
+
+	parameters {
+		gitParameterDefinition {
+			name('IMAGE_TAG')
+			branch('refs/tags/*')
+			branchFilter('.*')
+	    	defaultValue('latest')
+	    	listSize('0')
+	    	selectedValue('TOP')
+	    	sortMode('DESCENDING_SMART')
+	    	type('PT_TAG')
+			description('')
+			tagFilter('*')
+			useRepository(gitUrl)
+			quickFilterEnabled(false)
+	    }
+	}
 
 	triggers {
 		upstream('CI_job', 'SUCCESS')
@@ -48,6 +61,6 @@ pipelineJob("CD_job") {
 				}
 			}
 			scriptPath('jenkins/CD_job.groovy')
-		}	
+		}
 	}
 }
