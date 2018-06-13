@@ -1,11 +1,13 @@
 def CONTAINER_NAME = "app"
+def CONTAINER_TAG = "latest"
 def DOCKER_HUB_USER = "karshkoff"
 def APP_HTTP_PORT = "5000"
 
 node {
 
 	stage('Initialize') {
-		def CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
+		CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
+		echo CONTAINER_TAG
         if (CONTAINER_TAG == '') {
         	currentBuild.result = 'FAILED'
 			sh "exit ${exitCode}"    
