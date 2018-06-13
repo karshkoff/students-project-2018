@@ -2,20 +2,12 @@ def CONTAINER_NAME = "app"
 def APP_HTTP_PORT = "80"
 def HOST = "lab"
 
-def dockerPrune() {
-
-  try {
-    sh "docker stop $CONTAINER_NAME"
-  } catch (error) {
-  }
-
-  try {
-    sh "docker images -q | xargs docker rmi -f"
-  } catch (error) {
-  }
-}
-
 node {
+
+  stage('Initialize') {
+    def dockerHome = tool 'myDocker'
+    env.PATH = "${dockerHome}/bin:${env.PATH}"
+  }
 
   stage('Checkout') {
     deleteDir()
@@ -26,7 +18,15 @@ node {
 
       echo "Deploy tag: ${env.IMAGE_TAG}"
 
-      dockerPrune()
+      try {
+        sh "docker stop $CONTAINER_NAME"
+      } catch (error) {
+      }
+
+      try {
+        sh "docker images -q | xargs docker rmi -f"
+      } catch (error) {
+      }
 
       ansiblePlaybook colorized: true,
       limit: "${HOST}",

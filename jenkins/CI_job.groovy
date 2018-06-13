@@ -4,6 +4,19 @@ def CONTAINER_TAG = ''
 def IMAGE_NAME = ''
 def APP_HTTP_PORT = "5000"
 
+def dockerPrune() {
+
+	try {
+		sh "docker stop $CONTAINER_NAME"
+	} catch (error) {
+	}
+
+	try {
+		sh "docker images -q | xargs docker rmi -f"
+	} catch (error) {
+	}
+}
+
 node {
 
 	stage('Initialize') {
@@ -55,18 +68,5 @@ node {
 		}
 
 		dockerPrune()
-	}
-
-	def dockerPrune() {
-
-		try {
-			sh "docker stop $CONTAINER_NAME"
-		} catch (error) {
-		}
-
-		try {
-			sh "docker images -q | xargs docker rmi -f"
-		} catch (error) {
-		}
 	}
 }
