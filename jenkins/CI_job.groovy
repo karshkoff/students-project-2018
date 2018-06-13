@@ -1,4 +1,5 @@
-def CONTAINER_NAME = "karshkoff/app"
+def CONTAINER_NAME = "app"
+def DOCKER_HUB_USER = "karshkoff"
 def CONTAINER_TAG = ''
 def IMAGE_NAME = ''
 def APP_HTTP_PORT = "5000"
@@ -25,7 +26,7 @@ node {
 			sh "exit ${exitCode}"    
         }
 
-        IMAGE_NAME = CONTAINER_NAME + ":" + CONTAINER_TAG
+        IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 
 		try {
 			sh 'docker rmi "$(docker images -q)"'
