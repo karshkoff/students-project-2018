@@ -4,23 +4,6 @@ def CONTAINER_TAG = ''
 def IMAGE_NAME = ''
 def APP_HTTP_PORT = "5000"
 
-def dockerPrune() {
-
-	echo "Docker prune all"
-
-	try {
-		sh "docker stop -t 5 $CONTAINER_NAME"
-	} catch (error) {
-	}
-
-	sleep 10
-
-	try {
-		sh "docker images -q | xargs docker rmi -f"
-	} catch (error) {
-	}
-}
-
 node {
 
 	stage('Initialize') {
@@ -45,7 +28,10 @@ node {
 
         IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 
-        dockerPrune()
+		try {
+			sh "docker images -q | xargs docker rmi"
+		} catch (error) {
+		}
 
 		sh "docker build -t $IMAGE_NAME --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
@@ -71,6 +57,9 @@ node {
 			echo "Image $IMAGE_NAME push complete"
 		}
 
-		dockerPrune()
+		try {
+			sh "docker stop $CONTAINER_NAME"
+		} catch (error) {
+		}
 	}
 }
