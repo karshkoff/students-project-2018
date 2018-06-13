@@ -1,4 +1,3 @@
-def CONTAINER_NAME = "app"
 def APP_HTTP_PORT = "80"
 def HOST = "lab"
 
@@ -10,6 +9,13 @@ node {
   }
 
   stage('Deploy to staging') {
+
+      try {
+        sh 'docker rmi "$(docker images -q)"'
+      } catch (error) {
+      }
+
+      echo "Deploy tag: ${env.IMAGE_TAG}"
 
       ansiblePlaybook colorized: true,
       limit: "${HOST}",
