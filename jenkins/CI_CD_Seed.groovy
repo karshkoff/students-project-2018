@@ -35,7 +35,7 @@ pipelineJob("CD_job") {
 			branchFilter('.*')
 	    	defaultValue('latest')
 	    	listSize('0')
-	    	selectedValue('TOP')
+	    	selectedValue('DEFAULT')
 	    	sortMode('DESCENDING_SMART')
 	    	type('PT_TAG')
 			description('')
