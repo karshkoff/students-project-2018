@@ -1,8 +1,7 @@
-def CONTAINER_NAME = "app"
-def CONTAINER_TAG = "latest"
-def DOCKER_HUB_USER = "karshkoff"
+def CONTAINER_NAME = "karshkoff/app"
+def CONTAINER_TAG = ''
+def IMAGE_NAME = ''
 def APP_HTTP_PORT = "5000"
-def IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 
 node {
 
@@ -14,6 +13,9 @@ node {
 	stage('Checkout') {
 		deleteDir()
 		checkout scm
+	}
+
+	stage('Build') {
 
 		CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
 		echo "Build tag: $CONTAINER_TAG"
@@ -22,9 +24,9 @@ node {
         	currentBuild.result = 'FAILED'
 			sh "exit ${exitCode}"    
         }
-	}
 
-	stage('Build') {
+        IMAGE_NAME = CONTAINER_NAME + ":" CONTAINER_TAG
+
 		try {
 			sh 'docker rmi "$(docker images -q)"'
 		} catch (error) {
