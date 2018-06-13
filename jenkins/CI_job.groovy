@@ -6,7 +6,7 @@ node {
 
 	stage('Initialize') {
 		def CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
-        if (CONTAINER_TAG = '') {
+        if (CONTAINER_TAG == '') {
         	currentBuild.result = 'FAILED'
 			sh "exit ${exitCode}"    
         }
