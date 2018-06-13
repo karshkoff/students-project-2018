@@ -25,7 +25,7 @@ node {
 			sh "exit ${exitCode}"    
         }
 
-        IMAGE_NAME = CONTAINER_NAME + ":" CONTAINER_TAG
+        IMAGE_NAME = CONTAINER_NAME + ":" + CONTAINER_TAG
 
 		try {
 			sh 'docker rmi "$(docker images -q)"'
