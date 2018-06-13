@@ -7,7 +7,6 @@ node {
 
 	stage('Initialize') {
 		CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
-		echo CONTAINER_TAG
         if (CONTAINER_TAG == '') {
         	currentBuild.result = 'FAILED'
 			sh "exit ${exitCode}"    
@@ -37,7 +36,7 @@ node {
 		} catch (error) {
 		}
 
-		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $CONTAINER_NAME"
+		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $CONTAINER_NAME:$CONTAINER_TAG"
 		sleep 5
 
 		exitCode = sh(returnStatus: true, script: "docker exec app python /opt/greetings_app/test_selects.py")
