@@ -6,12 +6,14 @@ def APP_HTTP_PORT = "5000"
 
 def dockerPrune() {
 
+	echo "Docker prune all"
+
 	try {
-		sh "docker stop $CONTAINER_NAME"
+		sh "docker stop -t 5 $CONTAINER_NAME"
 	} catch (error) {
 	}
-	
-	sleep 5
+
+	sleep 10
 
 	try {
 		sh "docker images -q | xargs docker rmi -f"

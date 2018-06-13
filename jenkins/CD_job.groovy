@@ -18,17 +18,6 @@ node {
 
       echo "Deploy tag: ${env.IMAGE_TAG}"
 
-      try {
-        sh "docker stop $CONTAINER_NAME"
-      } catch (error) {
-      }
-      sleep 5
-      
-      try {
-        sh "docker images -q | xargs docker rmi -f"
-      } catch (error) {
-      }
-
       ansiblePlaybook colorized: true,
       limit: "${HOST}",
       credentialsId: 'ssh-key-jenkins',
