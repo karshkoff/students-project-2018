@@ -28,20 +28,13 @@ node {
 
         IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 
-		try {
-			sh "docker images -q | xargs docker rmi -f"
-		} catch (error) {
-		}
+        dockerPrune()
 
 		sh "docker build -t $IMAGE_NAME --pull --no-cache ."
 		echo "Image $IMAGE_NAME build complete"
 	}
 
 	stage('Unit test') {
-		try {
-			sh "docker stop $CONTAINER_NAME"
-		} catch (error) {
-		}
 
 		sh "docker run -d --rm -p $APP_HTTP_PORT:$APP_HTTP_PORT --name $CONTAINER_NAME $IMAGE_NAME"
 		sleep 5
@@ -59,6 +52,21 @@ node {
 			sh "docker tag $IMAGE_NAME $IMAGE_NAME"
 			sh "docker push $IMAGE_NAME"
 			echo "Image $IMAGE_NAME push complete"
+		}
+
+		dockerPrune()
+	}
+
+	def dockerPrune() {
+
+		try {
+			sh "docker stop $CONTAINER_NAME"
+		} catch (error) {
+		}
+
+		try {
+			sh "docker images -q | xargs docker rmi -f"
+		} catch (error) {
 		}
 	}
 }

@@ -1,3 +1,4 @@
+def CONTAINER_NAME = "app"
 def APP_HTTP_PORT = "80"
 def HOST = "lab"
 
@@ -10,12 +11,9 @@ node {
 
   stage('Deploy to staging') {
 
-      try {
-        sh "docker images -q | xargs docker rmi -f"
-      } catch (error) {
-      }
-
       echo "Deploy tag: ${env.IMAGE_TAG}"
+
+      dockerPrune()
 
       ansiblePlaybook colorized: true,
       limit: "${HOST}",
@@ -35,5 +33,17 @@ node {
         currentBuild.result = 'FAILED'
         sh "exit ${exitCode}"
     }
+  }
+
+  def dockerPrune() {
+    try {
+        sh "docker stop $CONTAINER_NAME"
+      } catch (error) {
+      }
+
+      try {
+        sh "docker images -q | xargs docker rmi -f"
+      } catch (error) {
+      }
   }
 }
