@@ -2,6 +2,19 @@ def CONTAINER_NAME = "app"
 def APP_HTTP_PORT = "80"
 def HOST = "lab"
 
+def dockerPrune() {
+
+  try {
+    sh "docker stop $CONTAINER_NAME"
+  } catch (error) {
+  }
+
+  try {
+    sh "docker images -q | xargs docker rmi -f"
+  } catch (error) {
+  }
+}
+
 node {
 
   stage('Checkout') {
@@ -33,17 +46,5 @@ node {
         currentBuild.result = 'FAILED'
         sh "exit ${exitCode}"
     }
-  }
-
-  def dockerPrune() {
-    try {
-        sh "docker stop $CONTAINER_NAME"
-      } catch (error) {
-      }
-
-      try {
-        sh "docker images -q | xargs docker rmi -f"
-      } catch (error) {
-      }
   }
 }
