@@ -22,7 +22,8 @@ node {
         sh "docker stop $CONTAINER_NAME"
       } catch (error) {
       }
-
+      sleep 5
+      
       try {
         sh "docker images -q | xargs docker rmi -f"
       } catch (error) {
