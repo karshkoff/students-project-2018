@@ -44,7 +44,7 @@ pipelineJob("CD_job") {
 						url(gitUrl)
 						credentials('github-karshkoff')
 					}
-					branch('master')
+					branch('refs/tags/*')
 				}
 			}
 			scriptPath('jenkins/CD_job.groovy')
