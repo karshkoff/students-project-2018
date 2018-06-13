@@ -7,13 +7,6 @@ def IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 node {
 
 	stage('Initialize') {
-		CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
-		echo "Build tag: $CONTAINER_TAG"
-
-        if (CONTAINER_TAG == '') {
-        	currentBuild.result = 'FAILED'
-			sh "exit ${exitCode}"    
-        }
 		def dockerHome = tool 'myDocker'
 		env.PATH = "${dockerHome}/bin:${env.PATH}"
 	}
@@ -21,6 +14,14 @@ node {
 	stage('Checkout') {
 		deleteDir()
 		checkout scm
+
+		CONTAINER_TAG = sh(returnStdout: true, script: "git describe --tags 2>/dev/null").trim()
+		echo "Build tag: $CONTAINER_TAG"
+
+        if (CONTAINER_TAG == '') {
+        	currentBuild.result = 'FAILED'
+			sh "exit ${exitCode}"    
+        }
 	}
 
 	stage('Build') {
