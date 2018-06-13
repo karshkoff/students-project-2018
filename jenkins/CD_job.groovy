@@ -11,7 +11,7 @@ node {
   stage('Deploy to staging') {
 
       try {
-        sh 'docker rmi "$(docker images -q)"'
+        sh docker rmi -f $(docker images -q)
       } catch (error) {
       }
 

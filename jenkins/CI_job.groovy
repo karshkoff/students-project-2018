@@ -29,7 +29,7 @@ node {
         IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 
 		try {
-			sh 'docker rmi -f "$(docker images -q)"'
+			sh docker rmi -f $(docker images -q)
 		} catch (error) {
 		}
 
