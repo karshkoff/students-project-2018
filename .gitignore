@@ -1,1 +1,3 @@
 __pycache__/
+ansible/*.retry
+greetings_app/*.pyc

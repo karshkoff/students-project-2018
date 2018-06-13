@@ -9,6 +9,18 @@
   become: yes
 
   tasks:
+    - name: Install requirements
+      yum:
+        name: "{{ item }}"
+        state: latest
+      loop:
+        - python2
+        - python2-pip
+    - pip:
+        name: "{{ item }}" 
+      loop:
+        - docker-compose
+
     - name: Copy app's files
       copy:
         src: "{{ playbook_dir }}/../greetings_app"
@@ -24,18 +36,14 @@
         path: /var/data
         state: directory
 
-    - name: remove container psql
+    - name: Stop and remove containers
       docker_container:
-        name: psql
+        name: "{{ item }}"
         state: absent
-    - name: remove container app
-      docker_container:
-        name: app
-        state: absent
-    - name: remove container nginx
-      docker_container:
-        name: nginx
-        state: absent
+      loop:
+        - app
+        - psql
+        - nginx
 
     - name: Create docker-compose and start containers
       docker_service:
@@ -54,18 +62,10 @@
                 - "POSTGRES_PASSWORD={{ postgres_passwd }}"
                 - "POSTGRES_DB=greetings"
             web:
-              image: python:3.7-rc
+              image: "karshkoff/app:{{ lookup('env','APP_TAG_NAME') or 'latest' }}" 
               container_name: app
               environment:
                 - "DB_URL=postgresql://{{ postgres_user }}:{{ postgres_passwd }}@psql:5432/greetings"
-              expose:
-                - 5000
-              volumes:
-                - "{{ ansible_user_dir }}/{{ project_name }}/greetings_app:/greetings_app"
-              entrypoint:
-                - /bin/bash
-                - -c
-                - "pip install -r greetings_app/requirements.txt && python greetings_app/app.py"
               depends_on:
                 - db
             proxy:

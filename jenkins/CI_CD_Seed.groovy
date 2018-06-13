@@ -1,3 +1,5 @@
+def gitUrl = 'https://github.com/karshkoff/students-project-2018.git'
+
 pipelineJob("CI_job") {
 
 	displayName('greetings app CI')
@@ -11,10 +13,14 @@ pipelineJob("CI_job") {
 			scm {
 				git {
 					remote {
-						url('https://github.com/karshkoff/students-project-2018.git')
+						url(gitUrl)
 						credentials('github-karshkoff')
 					}
 					branch('refs/tags/*')
+					
+					extensions {
+						gitTagMessageExtension {}
+					}
 				}
 			}
 			scriptPath('jenkins/CI_job.groovy')
@@ -35,13 +41,13 @@ pipelineJob("CD_job") {
 			scm {
 				git {
 					remote {
-						url('https://github.com/karshkoff/students-project-2018.git')
+						url(gitUrl)
 						credentials('github-karshkoff')
 					}
-					branch('master')
+					branch('refs/tags/*')
 				}
 			}
 			scriptPath('jenkins/CD_job.groovy')
-		}
+		}	
 	}
 }
