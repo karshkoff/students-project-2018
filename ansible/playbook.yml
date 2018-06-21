@@ -45,6 +45,16 @@
         - psql
         - nginx
 
+    - name: Remove images
+      docker_image:
+        name: "{{ item }}"
+        force: yes
+        state: absent
+      loop:
+        - karshkoff/app
+        - postgres
+        - nginx
+
     - name: Create docker-compose and start containers
       docker_service:
         project_name: "{{ project_name }}"

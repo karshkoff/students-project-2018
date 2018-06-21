@@ -23,13 +23,13 @@ node {
 
         if (CONTAINER_TAG == '') {
         	currentBuild.result = 'FAILED'
-			sh "exit ${exitCode}"    
+			sh "exit 1"    
         }
 
         IMAGE_NAME = DOCKER_HUB_USER + "/" + CONTAINER_NAME + ":" + CONTAINER_TAG
 
 		try {
-			sh "docker images -q | xargs docker rmi"
+			sh "docker images -q | xargs docker rmi -f"
 		} catch (error) {
 		}
 
@@ -47,6 +47,11 @@ node {
 			currentBuild.result = 'FAILED'
 			sh "exit ${exitCode}"
 		}
+
+		try {
+			sh "docker stop $CONTAINER_NAME"
+		} catch (error) {
+		}
 	}
 
 	stage('Push to dockerhub') {
@@ -55,11 +60,6 @@ node {
 			sh "docker tag $IMAGE_NAME $IMAGE_NAME"
 			sh "docker push $IMAGE_NAME"
 			echo "Image $IMAGE_NAME push complete"
-		}
-
-		try {
-			sh "docker stop $CONTAINER_NAME"
-		} catch (error) {
 		}
 	}
 }
